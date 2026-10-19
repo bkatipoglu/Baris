@@ -168,16 +168,16 @@
   }
   
   .hero-title-group { position: relative; margin-bottom: 30px; display: flex; flex-direction: column; align-items: center; }
-  .main-name {
+   .main-name {
     font-family: 'Outfit', sans-serif;
     font-size: clamp(5rem, 14vw, 12rem); font-weight: 800;
-    letter-spacing: -2px; line-height: 0.9; text-transform: uppercase;
-    margin-bottom: -10px; 
+    letter-spacing: -2px; line-height: 1.1; text-transform: uppercase; /* line-height artırıldı */
+    margin-bottom: 5px; /* Negatif boşluk sıfırlandı, hafif boşluk verildi */
   }
   .sub-name {
     font-family: 'Outfit', sans-serif; font-weight: 300;
     font-size: clamp(2.5rem, 7vw, 6rem); color: var(--text-dark); 
-    letter-spacing: -2px; line-height: 1;
+    letter-spacing: -2px; line-height: 1.2; /* Satır yüksekliği artırıldı */
   }
   .hero-desc {
     font-size: 1.15rem; color: #222; max-width: 650px;
