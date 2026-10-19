@@ -143,19 +143,18 @@
     font-size: 0.9rem; letter-spacing: 1px;
   }
   
-/* LOGO VE İSİM */
+  /* LOGO VE İSİM */
   .logo { display: flex; align-items: center; gap: 12px; cursor: default; }
   .logo img { width: 50px; height: auto; mix-blend-mode: multiply; }
   .logo .name-container { display: flex; margin-top: 2px; }
   .logo .name-first { font-weight: 700; font-size: 1.2rem; color: #000; }
   .logo .name-last { font-weight: 400; font-size: 1.2rem; color: #000; }
 
-
   /* DİL SEÇİCİ */
   .lang-switch {
     display: flex; gap: 8px; align-items: center;
     font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 1rem;
-    margin-right: 120px; /* MENÜ BUTONUYLA ÇAKIŞMAMASI İÇİN SAĞDAN BOŞLUK BIRAKTIK */
+    margin-right: 120px; /* SAĞDAN 120PX YAPILDI */
     z-index: 10;
   }
   .lang-btn {
@@ -531,7 +530,7 @@
     .sub-name { font-size: clamp(2.5rem, 12vw, 5rem); }
     .back-to-top { bottom: 20px; right: 20px; }
     .logo img { width: 40px; }
-    .lang-switch { margin-right: 60px; } /* Mobilde de menü butonuyla çakışmasın */
+    .lang-switch { margin-right: 70px; } /* Mobilde menü butonuyla çakışmasın */
 
     .timeline-wrapper { overflow: visible; padding: 0; }
     .timeline { flex-direction: column; padding: 0; width: 100%; gap: 30px; }
@@ -578,6 +577,7 @@
 
   <div class="top-nav">
     <div class="logo">
+      <!-- Logo uzantısı .svg olarak düzeltildi -->
       <img src="logo.svg" alt="BK Logo">
       <div class="name-container">
         <span class="name-first">Barış</span>&nbsp;<span class="name-last">Kâtipoğlu</span>
