@@ -154,6 +154,8 @@
   .lang-switch {
     display: flex; gap: 8px; align-items: center;
     font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 1rem;
+    margin-right: 80px; /* MENÜ BUTONUYLA ÇAKIŞMAMASI İÇİN SAĞDAN BOŞLUK BIRAKTIK */
+    z-index: 10;
   }
   .lang-btn {
     background: none; border: none; cursor: pointer;
@@ -516,7 +518,7 @@
 
   footer { text-align: center; padding: 50px 24px; color: var(--muted-dark); font-size: .85rem; border-top: 1px solid rgba(255,255,255,.05); letter-spacing: .5px; position: relative; z-index: 10; font-weight: 500; background: var(--bg-dark); }
 
-  /* MOBİL UYUM */
+  /* MOBİL UYUM VE DÜZELTME */
   @media (max-width: 900px) {
     .whoami-content { grid-template-columns: 1fr; gap: 40px; }
     .whoami-stats-grid { grid-template-columns: 1fr 1fr; }
@@ -528,6 +530,7 @@
     .sub-name { font-size: clamp(2.5rem, 12vw, 5rem); }
     .back-to-top { bottom: 20px; right: 20px; }
     .logo img { width: 40px; }
+    .lang-switch { margin-right: 60px; } /* Mobilde de menü butonuyla çakışmasın */
 
     .timeline-wrapper { overflow: visible; padding: 0; }
     .timeline { flex-direction: column; padding: 0; width: 100%; gap: 30px; }
