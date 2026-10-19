@@ -524,21 +524,21 @@
     .whoami-content { grid-template-columns: 1fr; gap: 40px; }
     .whoami-stats-grid { grid-template-columns: 1fr 1fr; }
     .whoami-title { font-size: clamp(3.5rem, 15vw, 8rem); letter-spacing: -2px; }
-    .top-nav { padding: 20px; }
-    .circular-badge { top: 80px; right: 20px; transform: scale(0.8); }
-    .menu-btn { top: 20px; right: 20px; }
-    .main-name { font-size: clamp(3rem, 15vw, 6rem); }
-    .sub-name { font-size: clamp(2.5rem, 12vw, 5rem); }
-    .back-to-top { bottom: 20px; right: 20px; }
-    .logo img { width: 40px; }
-    .lang-switch { margin-right: 70px; } /* Mobilde menü butonuyla çakışmasın */
-
-    .timeline-wrapper { overflow: visible; padding: 0; }
-    .timeline { flex-direction: column; padding: 0; width: 100%; gap: 30px; }
-    .timeline-item { width: 100%; margin: 0; }
-    .timeline-item::before { left: -10px; top: 40px; }
-  }
-  
+    
+    /* MOBİL İÇİN YENİ EKLENEN DÜZELTMELER */
+    .main-name { 
+      font-size: clamp(3rem, 15vw, 6rem); 
+      line-height: 1.2; /* Harflerin üst üste binmesini engeller */
+      margin-bottom: 10px; 
+    }
+    .sub-name { 
+      font-size: clamp(2.5rem, 12vw, 5rem); 
+      line-height: 1.2; 
+      margin-top: 0px; /* Varsa eksi marginleri sıfırlar */
+    }
+    .hero-role {
+      margin-top: 15px; /* Ünvanla isim arasına mobilde biraz daha boşluk koyar */
+    }
   @media (max-width: 820px) {
     .contact-wrap { grid-template-columns: 1fr; }
     section { padding: 80px 20px; }
