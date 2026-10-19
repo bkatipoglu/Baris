@@ -8,14 +8,14 @@
 <meta name="author" content="Barış Kâtipoğlu">
 <link rel="canonical" href="https://bariskatipoglu.com/">
 
-<!-- Sosyal Medya Etiketleri (Open Graph) -->
+<!-- Sosyal Medya Etiketleri -->
 <meta property="og:type" content="website">
 <meta property="og:title" content="Barış Kâtipoğlu | İnşaat Mühendisi">
 <meta property="og:description" content="Güvenli, sürdürülebilir ve estetik yapılar inşa ederek geleceğin altyapısını tasarlıyorum.">
 <meta property="og:url" content="https://bariskatipoglu.com/">
 <meta name="twitter:card" content="summary_large_image">
 
-<!-- Favicon (Tarayıcı Sekmesi İkonu) -->
+<!-- Favicon -->
 <link rel="icon" type="image/svg+xml" href="logo.svg">
 
 <!-- Fontlar -->
@@ -23,7 +23,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;800&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
 
-<!-- Yapısal Veri (SEO - Google İçin) -->
+<!-- Yapısal Veri (SEO) -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -36,7 +36,7 @@
     {"@type": "CollegeOrUniversity", "name": "Hacettepe Üniversitesi"},
     {"@type": "CollegeOrUniversity", "name": "Ondokuz Mayıs Üniversitesi"}
   ],
-  "knowsAbout": ["İnşaat Mühendisliği", "Proje Yönetimi", "Altyapı Projeleri", "Malzeme Bilimi"],
+  "knowsAbout": ["İnşaat Mühendisliği", "Proje Yönetimi", "Altyapı Projeleri", "Malzeme Bilimi", "Süreç Otomasyonu"],
   "address": {
     "@type": "PostalAddress",
     "addressLocality": "Samsun",
@@ -70,7 +70,7 @@
   }
   body.loading { overflow: hidden; }
 
-  /* ===== ORTAK CANVAS (ARKA PLANDA) ===== */
+  /* ===== ORTAK CANVAS ===== */
   #bg-canvas {
     position: fixed; top: 0; left: 0;
     width: 100vw; height: 100vh;
@@ -78,6 +78,40 @@
     pointer-events: none; 
     opacity: 1;
   }
+
+  /* ===== MATEMATİKSEL DOKUNUŞ ===== */
+  .math-layer {
+    position: absolute; inset: 0; overflow: hidden;
+    pointer-events: none; z-index: 2;
+  }
+  .formula {
+    position: absolute;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: rgba(0, 0, 0, 0.03);
+    user-select: none;
+    animation: floatMath 25s ease-in-out infinite alternate;
+  }
+  .dark-math .formula { color: rgba(255, 255, 255, 0.02); }
+  @keyframes floatMath {
+    0% { transform: translateY(0) rotate(0deg); }
+    100% { transform: translateY(-30px) rotate(2deg); }
+  }
+  
+  .cad-crosshair {
+    position: absolute;
+    width: 30px; height: 30px;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    border-radius: 50%;
+  }
+  .cad-crosshair::before, .cad-crosshair::after {
+    content: ''; position: absolute; background: rgba(0, 0, 0, 0.05);
+  }
+  .cad-crosshair::before { top: 50%; left: -10px; right: -10px; height: 1px; }
+  .cad-crosshair::after { left: 50%; top: -10px; bottom: -10px; width: 1px; }
+  .dark-math .cad-crosshair { border-color: rgba(255, 255, 255, 0.05); }
+  .dark-math .cad-crosshair::before, .dark-math .cad-crosshair::after { background: rgba(255, 255, 255, 0.05); }
 
   /* ===== PRELOADER ===== */
   .preloader {
@@ -95,7 +129,7 @@
     pointer-events: none; letter-spacing: -2px;
   }
 
-  /* ===== ANA SAYFA (AÇIK TEMA) ===== */
+  /* ===== ANA SAYFA ===== */
   .hero-light {
     position: relative; background: var(--bg-light);
     color: var(--text-dark); min-height: 100vh;
@@ -109,12 +143,24 @@
     font-size: 0.9rem; letter-spacing: 1px;
   }
   
-  /* LOGO ALANI */
+  /* LOGO VE İSİM */
   .logo { display: flex; align-items: center; gap: 12px; cursor: default; }
-  .logo img { width: 55px; height: auto; } /* Logonun boyutu */
+  .logo img { width: 50px; height: auto; mix-blend-mode: multiply; }
   .logo .name-container { display: flex; margin-top: 2px; }
   .logo .name-first { font-weight: 700; font-size: 1.2rem; color: #000; }
   .logo .name-last { font-weight: 400; font-size: 1.2rem; color: #000; }
+
+  /* DİL SEÇİCİ */
+  .lang-switch {
+    display: flex; gap: 8px; align-items: center;
+    font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 1rem;
+  }
+  .lang-btn {
+    background: none; border: none; cursor: pointer;
+    color: rgba(0,0,0,0.3); transition: color 0.3s ease; font-size: 1rem;
+  }
+  .lang-btn:hover { color: #000; }
+  .lang-btn.active { color: #000; text-decoration: underline; text-underline-offset: 4px; }
 
   /* MENÜ BUTONU */
   .menu-btn {
@@ -160,37 +206,38 @@
   @keyframes spin { 100% { transform: rotate(360deg); } }
 
   /* HERO İÇERİK */
-    .hero-main {
+  .hero-main {
     flex: 1; display: flex; flex-direction: column;
     justify-content: center; align-items: center;
     text-align: center; padding: 0 20px; position: relative; z-index: 10;
-    margin-bottom: 200px; /* Burayı büyüttükçe yazılar yukarı çıkar */
+    margin-bottom: 140px; 
   }
   
   .hero-title-group { position: relative; margin-bottom: 30px; display: flex; flex-direction: column; align-items: center; }
-   .main-name {
+  .main-name {
     font-family: 'Outfit', sans-serif;
     font-size: clamp(5rem, 14vw, 12rem); font-weight: 800;
-    letter-spacing: -2px; line-height: 1.1; text-transform: uppercase; /* line-height artırıldı */
-    margin-bottom: 5px; /* Negatif boşluk sıfırlandı, hafif boşluk verildi */
+    letter-spacing: -2px; line-height: 1.1; text-transform: uppercase;
+    margin-bottom: 5px; 
   }
   .sub-name {
     font-family: 'Outfit', sans-serif; font-weight: 300;
     font-size: clamp(2.5rem, 7vw, 6rem); color: var(--text-dark); 
-    letter-spacing: -2px; line-height: 1.2; /* Satır yüksekliği artırıldı */
+    letter-spacing: -2px; line-height: 1.2;
   }
   .hero-desc {
     font-size: 1.15rem; color: #222; max-width: 650px;
-    margin: 25px auto 30px auto; line-height: 1.6; font-weight: 500;
+    margin: 20px auto 30px auto; line-height: 1.6; font-weight: 500;
   }
   .hero-role {
     color: var(--accent-light); font-weight: 700; letter-spacing: 3px;
     text-transform: uppercase; font-size: 0.85rem;
+    margin-bottom: 20px;
   }
 
   /* KEŞFET */
-   .scroll-indicator {
-    position: absolute; bottom: 110px; left: 50%; transform: translateX(-50%);
+  .scroll-indicator {
+    position: absolute; bottom: 80px; left: 50%; transform: translateX(-50%);
     display: flex; flex-direction: column; align-items: center; gap: 10px;
     z-index: 10; opacity: 0; cursor: pointer; text-decoration: none;
     transition: transform 0.3s ease;
@@ -230,7 +277,7 @@
 
   /* DİĞER BÖLÜMLER */
   .dark-content { background: transparent; position: relative; z-index: 10; }
-  section { padding: 120px 24px; max-width: 1150px; margin: 0 auto; position: relative; z-index: 10; }
+  section { padding: 100px 24px; max-width: 1150px; margin: 0 auto; position: relative; z-index: 10; }
 
   /* MENÜ */
   .curve-menu { position: fixed; inset: 0; z-index: 10001; pointer-events: none; }
@@ -321,21 +368,99 @@
   .whoami-author-info h4 { font-size: 1.1rem; font-weight: 700; margin-bottom: 2px; }
   .whoami-author-info span { font-size: 0.85rem; color: var(--accent-dark); font-weight: 600; }
 
-  /* DENEYİM */
-  .timeline { position: relative; padding-left: 40px; }
-  .timeline::before { content: ''; position: absolute; left: 12px; top: 0; bottom: 0; width: 2px; background: linear-gradient(180deg, var(--accent-dark), #00C97D, transparent); }
+  /* ===== VERİ ODAKLI (ETKİ ALANI) ===== */
+  .impact-section { padding: 80px 24px; }
+  .impact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 24px;
+    margin-top: 40px;
+  }
+  .impact-card {
+    background: rgba(16, 24, 21, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 30px;
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.05);
+    position: relative;
+    overflow: hidden;
+  }
+  .impact-card::before {
+    content: ''; position: absolute; left: 0; top: 0; width: 100%; height: 4px;
+    background: linear-gradient(90deg, var(--accent-dark), transparent);
+    transform: scaleX(0); transform-origin: left; transition: transform 0.6s ease;
+  }
+  .impact-card:hover::before { transform: scaleX(1); }
+  .impact-value {
+    font-family: 'Outfit', sans-serif;
+    font-size: 3.5rem; font-weight: 800; color: var(--text-light);
+    line-height: 1; margin-bottom: 10px; display: flex; align-items: baseline; gap: 5px;
+  }
+  .impact-value span { color: var(--accent-dark); font-size: 2rem; }
+  .impact-label {
+    font-size: 1rem; color: var(--muted-dark); font-weight: 500; margin-bottom: 20px;
+  }
+  .impact-bar-bg {
+    width: 100%; height: 6px; background: rgba(255,255,255,0.1);
+    border-radius: 3px; overflow: hidden; position: relative;
+  }
+  .impact-bar-fill {
+    height: 100%; width: 0%; background: var(--accent-dark);
+    border-radius: 3px; position: absolute; top: 0; left: 0;
+    box-shadow: 0 0 10px rgba(0,255,157,0.5);
+  }
+
+  /* ===== YATAY DENEYİM ===== */
+  .timeline-wrapper {
+    overflow: hidden; 
+    width: 100%;
+    position: relative;
+  }
+
+  .timeline {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 40px;
+    padding-left: 10vw; 
+    padding-right: 10vw;
+    width: max-content; 
+    position: relative;
+  }
+  
   .timeline-item {
-    position: relative; margin-bottom: 40px; padding: 30px; background: rgba(16, 24, 21, 0.95);
-    backdrop-filter: blur(10px); border-radius: 18px; border: 1px solid rgba(255,255,255,.05);
+    position: relative; 
+    width: 400px; 
+    padding: 40px;
+    background: rgba(16, 24, 21, 0.95);
+    backdrop-filter: blur(10px); 
+    border-radius: 24px; 
+    border: 1px solid rgba(255,255,255,.05);
     transition: transform .4s ease, border-color .4s ease, box-shadow .4s ease;
   }
-  .timeline-item:hover { transform: translateX(10px); border-color: var(--accent-dark); box-shadow: 0 10px 40px rgba(0,255,157,.1); }
-  .timeline-item::before { content: ''; position: absolute; left: -34px; top: 32px; width: 14px; height: 14px; border-radius: 50%; background: var(--accent-dark); box-shadow: 0 0 0 4px rgba(0,255,157,.2); animation: pulse 2.5s ease-in-out infinite; }
-  @keyframes pulse { 0%,100% { box-shadow: 0 0 0 4px rgba(0,255,157,.2); } 50% { box-shadow: 0 0 0 10px rgba(0,255,157,0); } }
-  .timeline-item .date { font-size: .8rem; color: var(--accent-dark); font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
-  .timeline-item h3 { font-family: 'Outfit', sans-serif; margin: 10px 0 6px; font-size: 1.3rem; letter-spacing: -.5px; font-weight: 700; }
-  .timeline-item .company { color: var(--muted-dark); font-size: .9rem; margin-bottom: 15px; font-weight: 600; }
-  .timeline-item p { color: #A8BDB2; font-size: .95rem; line-height: 1.7; }
+  .timeline-item:hover { 
+    transform: translateY(-10px); 
+    border-color: var(--accent-dark); 
+    box-shadow: 0 20px 50px rgba(0,255,157,.15); 
+  }
+  
+  .timeline-item::before { 
+    content: ''; 
+    position: absolute; 
+    left: 40px; 
+    top: -20px; 
+    width: 16px; 
+    height: 16px; 
+    border-radius: 50%; 
+    background: var(--accent-dark); 
+    box-shadow: 0 0 0 6px rgba(0,255,157,.2); 
+    animation: pulse 2.5s ease-in-out infinite; 
+  }
+  @keyframes pulse { 0%,100% { box-shadow: 0 0 0 6px rgba(0,255,157,.2); } 50% { box-shadow: 0 0 0 15px rgba(0,255,157,0); } }
+  
+  .timeline-item .date { font-size: .9rem; color: var(--accent-dark); font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+  .timeline-item h3 { font-family: 'Outfit', sans-serif; margin: 12px 0 8px; font-size: 1.5rem; letter-spacing: -.5px; font-weight: 700; }
+  .timeline-item .company { color: var(--muted-dark); font-size: 1rem; margin-bottom: 20px; font-weight: 600; }
+  .timeline-item p { color: #A8BDB2; font-size: 1rem; line-height: 1.8; }
 
   /* PROJELER */
   .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 28px; }
@@ -391,6 +516,7 @@
 
   footer { text-align: center; padding: 50px 24px; color: var(--muted-dark); font-size: .85rem; border-top: 1px solid rgba(255,255,255,.05); letter-spacing: .5px; position: relative; z-index: 10; font-weight: 500; background: var(--bg-dark); }
 
+  /* MOBİL UYUM */
   @media (max-width: 900px) {
     .whoami-content { grid-template-columns: 1fr; gap: 40px; }
     .whoami-stats-grid { grid-template-columns: 1fr 1fr; }
@@ -402,57 +528,69 @@
     .sub-name { font-size: clamp(2.5rem, 12vw, 5rem); }
     .back-to-top { bottom: 20px; right: 20px; }
     .logo img { width: 40px; }
+
+    .timeline-wrapper { overflow: visible; padding: 0; }
+    .timeline { flex-direction: column; padding: 0; width: 100%; gap: 30px; }
+    .timeline-item { width: 100%; margin: 0; }
+    .timeline-item::before { left: -10px; top: 40px; }
   }
+  
   @media (max-width: 820px) {
     .contact-wrap { grid-template-columns: 1fr; }
     section { padding: 80px 20px; }
+    .formula { display: none; }
   }
 </style>
 </head>
 <body class="loading">
 
-<!-- ORTAK CANVAS -->
 <canvas id="bg-canvas"></canvas>
 
-<!-- PRELOADER -->
 <div class="preloader" id="preloader">
   <div class="preloader-text" id="preText">Merhaba</div>
 </div>
 
-<!-- SAĞ ÜST MENÜ BUTONU -->
 <button class="menu-btn" id="menuBtn" aria-label="Menüyü aç">
   <span class="bars"><span></span><span></span><span></span></span>
 </button>
 
-<!-- SAĞ ALT YUKARI ÇIK BUTONU -->
 <button class="back-to-top" id="backToTop" aria-label="Yukarı çık">
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
 </button>
 
-<!-- ANA SAYFA (AÇIK TEMA) -->
 <header class="hero-light" id="hero">
-  <div class="top-nav">
-    <!-- YENİ LOGO ALANI -->
-                <div class="logo" style="display: flex; align-items: center; gap: 12px;">
-        
-        <!-- Logoyu, sitenin arka plan rengiyle aynı olan bir kapsayıcıya alıyoruz -->
-        <div style="background-color: #F2F6F3; padding: 4px; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
-          <img src="logo.svg" alt="BK Logo" style="width: 100px; height: auto; display: block;">
-        </div>
+  <!-- MATEMATİKSEL DOKUNUŞ -->
+  <div class="math-layer">
+    <span class="formula" style="top: 15%; left: 5%; animation-delay: 0s;">M = σ × W</span>
+    <span class="formula" style="top: 25%; right: 8%; animation-delay: 2s;">δ = FL³ / 3EI</span>
+    <span class="formula" style="bottom: 20%; left: 10%; animation-delay: 4s;">Pcr = π²EI / L²</span>
+    <span class="formula" style="bottom: 15%; right: 8%; animation-delay: 1s;">τ = VQ / It</span>
+    <span class="formula" style="top: 60%; left: 2%; animation-delay: 3s;">E = σ / ε</span>
+    
+    <div class="cad-crosshair" style="top: 20%; left: 20%;"></div>
+    <div class="cad-crosshair" style="bottom: 30%; right: 20%;"></div>
+    <div class="cad-crosshair" style="top: 50%; right: 3%;"></div>
+  </div>
 
-        <!-- İsimler -->
-        <div class="name-container" style="margin-top: 2px;">
-       <span class="name-first" style="font-size: 1.2rem; color: #0A0F0D;">Barış</span><span class="name-last" style="font-size: 1.2rem; color: #0A0F0D;"> Kâtipoğlu</span>
-        </div>
-        
+  <div class="top-nav">
+    <div class="logo">
+      <img src="logo.png" alt="BK Logo">
+      <div class="name-container">
+        <span class="name-first">Barış</span>&nbsp;<span class="name-last">Kâtipoğlu</span>
       </div>
-      </div>
+    </div>
+    <!-- DİL SEÇİCİ -->
+    <div class="lang-switch">
+      <button class="lang-btn active" data-lang="tr">TR</button>
+      <span>/</span>
+      <button class="lang-btn" data-lang="en">EN</button>
+    </div>
   </div>
 
   <a href="#contact" class="circular-badge">
     <svg class="text-circle" viewBox="0 0 100 100">
       <path id="circlePath" d="M 50, 50 m -37, 0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0" fill="none"></path>
-      <text><textPath href="#circlePath">YENİ PROJELER İÇİN UYGUN • YENİ PROJELER İÇİN UYGUN • </textPath></text>
+      <text><textPath href="#circlePath" id="badgeText">YENİ PROJELER İÇİN UYGUN • YENİ PROJELER İÇİN UYGUN • </textPath></text>
     </svg>
     <div class="arrow-circle">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
@@ -464,213 +602,266 @@
       <h1 class="main-name">BARIŞ</h1>
       <h2 class="sub-name">Kâtipoğlu</h2>
     </div>
-    <p class="hero-desc">İnşaat mühendisliği, malzeme bilimi ve ürün yönetimi alanlarında 10+ yıllık tecrübeyle ulusal ve uluslararası dev projelere liderlik ediyorum.</p>
-    <div class="hero-role">İnşaat Mühendisi & Proje Koordinatörü</div>
+    <p class="hero-desc" data-i18n="hero_desc">İnşaat mühendisliği, malzeme bilimi ve ürün yönetimi alanlarında 10+ yıllık tecrübeyle ulusal ve uluslararası dev projelere liderlik ediyorum.</p>
+    <div class="hero-role" data-i18n="hero_role">İnşaat Mühendisi & Proje Koordinatörü</div>
   </div>
 
   <a href="#whoami" class="scroll-indicator" id="scrollIndicator">
     <div class="scroll-mouse">
       <div class="scroll-wheel"></div>
     </div>
-    <div class="scroll-text">Keşfet</div>
+    <div class="scroll-text" data-i18n="scroll_text">Keşfet</div>
   </a>
 </header>
 
 <div class="dark-content">
+  <div class="math-layer dark-math">
+    <span class="formula" style="top: 5%; right: 5%; animation-delay: 0s;">EIy'''' = q(x)</span>
+    <span class="formula" style="top: 40%; left: 2%; animation-delay: 2.5s;">σ = F / A</span>
+    <span class="formula" style="bottom: 15%; right: 10%; animation-delay: 1.5s;">f_y = M_y / W_y</span>
+  </div>
+
   <section id="whoami" class="whoami-section">
     <div class="whoami-header reveal">
-      <div class="whoami-label">(Hakkımda)</div>
-      <h2 class="whoami-title">BEN <span>KİMİM</span></h2>
+      <div class="whoami-label" data-i18n="about_label">(Hakkımda)</div>
+      <h2 class="whoami-title" data-i18n="about_title">BEN <span>KİMİM</span></h2>
     </div>
 
     <div class="whoami-content">
       <div class="whoami-text-box reveal delay-1">
-        <p><strong>Merhaba, ben Barış.</strong> ODTÜ İnşaat Mühendisliği mezunuyum. Kariyerim boyunca ulusal ve uluslararası büyük ölçekli projelerde (HS2, İzmir-İstanbul Otoyolu vb.) ürün yönetimi, Ar-Ge ve liderlik deneyimiyle görev aldım.</p>
-        <p>İnşaat mühendisliği ve malzeme bilimi alanlarındaki teknik uzmanlığımı, proje yönetimi ve stratejik liderlik vizyonuyla birleştiriyorum. Yaşam döngüsü yönetimi, inovatif malzeme geliştirme ve optimizasyon konularında uzmanlaştım.</p>
+        <p data-i18n="about_p1"><strong>Merhaba, ben Barış.</strong> ODTÜ İnşaat Mühendisliği mezunuyum. Kariyerim boyunca ulusal ve uluslararası büyük ölçekli projelerde (HS2, İzmir-İstanbul Otoyolu vb.) ürün yönetimi, Ar-Ge ve liderlik deneyimiyle görev aldım.</p>
+        <p data-i18n="about_p2">İnşaat mühendisliği ve malzeme bilimi alanlarındaki teknik uzmanlığımı, proje yönetimi ve stratejik liderlik vizyonuyla birleştiriyorum. Yaşam döngüsü yönetimi, inovatif malzeme geliştirme ve optimizasyon konularında uzmanlaştım.</p>
         
         <div class="whoami-stats-grid">
           <div class="whoami-stat-item">
             <span class="num" data-count="10">0</span>
-            <span class="label">Yıl Deneyim</span>
+            <span class="label" data-i18n="stat_1">Yıl Deneyim</span>
           </div>
           <div class="whoami-stat-item">
             <span class="num" data-count="500">0</span>
-            <span class="label">Milyon € Bütçe</span>
+            <span class="label" data-i18n="stat_2">Milyon € Bütçe</span>
           </div>
           <div class="whoami-stat-item">
             <span class="num" data-count="29">0</span>
-            <span class="label">Tamamlanan Köprü</span>
+            <span class="label" data-i18n="stat_3">Tamamlanan Köprü</span>
           </div>
           <div class="whoami-stat-item">
             <span class="num" data-count="3">0</span>
-            <span class="label">Yüksek Lisans</span>
+            <span class="label" data-i18n="stat_4">Yüksek Lisans</span>
           </div>
         </div>
       </div>
 
       <div class="whoami-aside reveal delay-2">
-        <div class="whoami-quote">
+        <div class="whoami-quote" data-i18n="about_quote">
           "İnşaat mühendisliği sadece hesaplamak değil; stratejik vizyon, inovatif malzeme ve kusursuz yönetimle geleceği inşa etmektir."
         </div>
         <div class="whoami-author">
           <div class="whoami-avatar">BK</div>
           <div class="whoami-author-info">
             <h4>Barış Kâtipoğlu</h4>
-            <span>Kıdemli Proje Koordinatörü</span>
+            <span data-i18n="about_role">Kıdemli Proje Koordinatörü</span>
           </div>
         </div>
       </div>
     </div>
   </section>
 
+  <section id="impact" class="impact-section">
+    <h2 class="section-title reveal" data-i18n="impact_title">Mühendislik <em>Etkimiz</em></h2>
+    <p class="section-sub reveal delay-1" data-i18n="impact_sub">Rakamlarla somut başarılar ve projelere sağladığım katma değer.</p>
+    
+    <div class="impact-grid">
+      <div class="impact-card reveal">
+        <div class="impact-value">%27<span>+</span></div>
+        <div class="impact-label" data-i18n="impact_c1">Statik Tasarım ile Maliyet Avantajı</div>
+        <div class="impact-bar-bg"><div class="impact-bar-fill" data-width="90%"></div></div>
+      </div>
+      
+      <div class="impact-card reveal delay-1">
+        <div class="impact-value">%15<span>+</span></div>
+        <div class="impact-label" data-i18n="impact_c2">Proje Süresi İyileştirmesi (HS2)</div>
+        <div class="impact-bar-bg"><div class="impact-bar-fill" data-width="70%"></div></div>
+      </div>
+      
+      <div class="impact-card reveal delay-2">
+        <div class="impact-value">318<span data-i18n="impact_tons"> Ton</span></div>
+        <div class="impact-label" data-i18n="impact_c3">Çelik Tasarrufu</div>
+        <div class="impact-bar-bg"><div class="impact-bar-fill" data-width="85%"></div></div>
+      </div>
+      
+      <div class="impact-card reveal delay-1">
+        <div class="impact-value">29<span data-i18n="impact_units"> Adet</span></div>
+        <div class="impact-label" data-i18n="impact_c4">Köprü Projesi (5 Ay Erken)</div>
+        <div class="impact-bar-bg"><div class="impact-bar-fill" data-width="95%"></div></div>
+      </div>
+
+      <div class="impact-card reveal delay-2">
+        <div class="impact-value">%80<span>+</span></div>
+        <div class="impact-label" data-i18n="impact_c5">Parametrik Tasarım & Süreç Otomasyonu</div>
+        <div class="impact-bar-bg"><div class="impact-bar-fill" data-width="80%"></div></div>
+      </div>
+    </div>
+  </section>
+
   <section id="experience">
-    <h2 class="section-title reveal">İş <em>Deneyimi</em></h2>
-    <p class="section-sub reveal delay-1">Profesyonel yolculuğumdan dönüm noktaları.</p>
-    <div class="timeline">
-      <div class="timeline-item reveal">
-        <div class="date">Ocak 2021 — Ekim 2025</div>
-        <h3>Kıdemli Proje Koordinatörü</h3>
-        <div class="company">jrl group</div>
-        <p>HS2 projesinde (6 TBM, 45 mil tünel) risk ve süreç analizlerini yöneterek proje gecikmelerini minimize ettim. Veri odaklı tahminleme ile proje süresinde %15 iyileşme ve maliyetlerde ciddi azalma sağladım.</p>
-      </div>
-      <div class="timeline-item reveal delay-1">
-        <div class="date">Ocak 2019 — Aralık 2021</div>
-        <h3>Koordinatör</h3>
-        <div class="company">Özaltın Holding</div>
-        <p>500+ milyon € bütçeli metro ve konut projelerinde tüm koordinasyonu üstlendim. 100+ kişilik ekibi yöneterek ürün/çözüm tasarımlarını müşteri ihtiyaçlarına uygun hale getirdim.</p>
-      </div>
-      <div class="timeline-item reveal delay-2">
-        <div class="date">Ocak 2018 — Aralık 2019</div>
-        <h3>Ülke Koordinatörü</h3>
-        <div class="company">Özaltın Holding</div>
-        <p>IBRD ve IPARD destekli projelerde uluslararası ihale süreçlerini yönettim. Tramvay hattı ve altyapı projelerinde ürün/hizmet konumlandırma ve teknik sözleşme yönetimi gerçekleştirdim.</p>
-      </div>
-      <div class="timeline-item reveal delay-1">
-        <div class="date">Ocak 2016 — Aralık 2018</div>
-        <h3>Teknik Ofis Müdürü</h3>
-        <div class="company">Özaltın Holding</div>
-        <p>İzmir-İstanbul otoyolu 45 km bölümünde teknik ürün/çözüm optimizasyonu yaptım. Statik projeleri yeniden tasarlayarak %27 maliyet avantajı ve 318 ton çelik tasarrufu sağladım. 29 köprü projesini 5 ay erken tamamladım.</p>
-      </div>
-      <div class="timeline-item reveal">
-        <div class="date">Ocak 2014 — Aralık 2016</div>
-        <h3>Teknik Ofis Mühendisi</h3>
-        <div class="company">Özaltın Holding</div>
-        <p>3 büyük tasarım hatasını erken tespit ederek yapısal riskleri önledim. Kriz döneminde uyguladığım maliyet azaltma stratejileri ile %12 tasarruf sağladım.</p>
+    <h2 class="section-title reveal" data-i18n="exp_title">İş <em>Deneyimi</em></h2>
+    <p class="section-sub reveal delay-1" data-i18n="exp_sub">Profesyonel yolculuğumdan dönüm noktaları.</p>
+    
+    <div class="timeline-wrapper reveal">
+      <div class="timeline" id="horizontalTimeline">
+        
+        <div class="timeline-item">
+          <div class="date" data-i18n="exp_1_date">Ocak 2021 — Ekim 2025</div>
+          <h3 data-i18n="exp_1_title">Kıdemli Proje Koordinatörü</h3>
+          <div class="company">jrl group</div>
+          <p data-i18n="exp_1_desc">HS2 projesinde (6 TBM, 45 mil tünel) risk ve süreç analizlerini yöneterek proje gecikmelerini minimize ettim. Veri odaklı tahminleme ile proje süresinde %15 iyileşme ve maliyetlerde ciddi azalma sağladım.</p>
+        </div>
+        
+        <div class="timeline-item">
+          <div class="date" data-i18n="exp_2_date">Ocak 2019 — Aralık 2021</div>
+          <h3 data-i18n="exp_2_title">Koordinatör</h3>
+          <div class="company">Özaltın Holding</div>
+          <p data-i18n="exp_2_desc">500+ milyon € bütçeli metro ve konut projelerinde tüm koordinasyonu üstlendim. 100+ kişilik ekibi yöneterek ürün/çözüm tasarımlarını müşteri ihtiyaçlarına uygun hale getirdim.</p>
+        </div>
+        
+        <div class="timeline-item">
+          <div class="date" data-i18n="exp_3_date">Ocak 2018 — Aralık 2019</div>
+          <h3 data-i18n="exp_3_title">Ülke Koordinatörü</h3>
+          <div class="company">Özaltın Holding</div>
+          <p data-i18n="exp_3_desc">IBRD ve IPARD destekli projelerde uluslararası ihale süreçlerini yönettim. Tramvay hattı ve altyapı projelerinde ürün/hizmet konumlandırma ve teknik sözleşme yönetimi gerçekleştirdim.</p>
+        </div>
+        
+        <div class="timeline-item">
+          <div class="date" data-i18n="exp_4_date">Ocak 2016 — Aralık 2018</div>
+          <h3 data-i18n="exp_4_title">Teknik Ofis Müdürü</h3>
+          <div class="company">Özaltın Holding</div>
+          <p data-i18n="exp_4_desc">İzmir-İstanbul otoyolu 45 km bölümünde teknik ürün/çözüm optimizasyonu yaptım. Statik projeleri yeniden tasarlayarak %27 maliyet avantajı ve 318 ton çelik tasarrufu sağladım. 29 köprü projesini 5 ay erken tamamladım.</p>
+        </div>
+        
+        <div class="timeline-item">
+          <div class="date" data-i18n="exp_5_date">Ocak 2014 — Aralık 2016</div>
+          <h3 data-i18n="exp_5_title">Teknik Ofis Mühendisi</h3>
+          <div class="company">Özaltın Holding</div>
+          <p data-i18n="exp_5_desc">3 büyük tasarım hatasını erken tespit ederek yapısal riskleri önledim. Kriz döneminde uyguladığım maliyet azaltma stratejileri ile %12 tasarruf sağladım.</p>
+        </div>
+
       </div>
     </div>
   </section>
 
   <section id="projects">
-    <h2 class="section-title reveal">Öne Çıkan <em>Projeler</em></h2>
-    <p class="section-sub reveal delay-1">Liderlik ettiğim dev ölçekli çalışmalar.</p>
+    <h2 class="section-title reveal" data-i18n="proj_title">Öne Çıkan <em>Projeler</em></h2>
+    <p class="section-sub reveal delay-1" data-i18n="proj_sub">Liderlik ettiğim dev ölçekli çalışmalar.</p>
     <div class="projects-grid">
       <div class="project-card reveal">
         <div class="project-visual">🚄</div>
         <div class="project-info">
-          <h3>HS2 Demiryolu Projesi</h3>
-          <p>İngiltere'nin en büyük altyapı projesinde 6 TBM ve 45 mil tünel yönetimi.</p>
-          <div class="project-tags"><span>Tünel</span><span>Risk Yönetimi</span></div>
+          <h3 data-i18n="proj_1_title">HS2 Demiryolu Projesi</h3>
+          <p data-i18n="proj_1_desc">İngiltere'nin en büyük altyapı projesinde 6 TBM ve 45 mil tünel yönetimi.</p>
+          <div class="project-tags"><span data-i18n="proj_1_t1">Tünel</span><span data-i18n="proj_1_t2">Risk Yönetimi</span></div>
         </div>
       </div>
       <div class="project-card reveal delay-1">
         <div class="project-visual">🛣️</div>
         <div class="project-info">
-          <h3>İzmir-İstanbul Otoyolu</h3>
-          <p>45 km'lik bölümde %27 maliyet avantajı sağlayan statik tasarım optimizasyonu.</p>
-          <div class="project-tags"><span>Otoyol</span><span>Çelik Tasarrufu</span></div>
+          <h3 data-i18n="proj_2_title">İzmir-İstanbul Otoyolu</h3>
+          <p data-i18n="proj_2_desc">45 km'lik bölümde %27 maliyet avantajı sağlayan statik tasarım optimizasyonu.</p>
+          <div class="project-tags"><span data-i18n="proj_2_t1">Otoyol</span><span data-i18n="proj_2_t2">Çelik Tasarrufu</span></div>
         </div>
       </div>
       <div class="project-card reveal delay-2">
         <div class="project-visual">🚇</div>
         <div class="project-info">
-          <h3>Metro & Konut Projeleri</h3>
-          <p>500+ milyon € bütçeli, 100+ kişilik ekiplerle yönetilen dev altyapı projeleri.</p>
-          <div class="project-tags"><span>Metro</span><span>Liderlik</span></div>
+          <h3 data-i18n="proj_3_title">Metro & Konut Projeleri</h3>
+          <p data-i18n="proj_3_desc">500+ milyon € bütçeli, 100+ kişilik ekiplerle yönetilen dev altyapı projeleri.</p>
+          <div class="project-tags"><span data-i18n="proj_3_t1">Metro</span><span data-i18n="proj_3_t2">Liderlik</span></div>
         </div>
       </div>
       <div class="project-card reveal">
         <div class="project-visual">🚊</div>
         <div class="project-info">
-          <h3>Uluslararası Tramvay Hattı</h3>
-          <p>IBRD ve IPARD destekli, uluslararası ihale süreçleri yönetilen tramvay projesi.</p>
-          <div class="project-tags"><span>Raylı Sistem</span><span>İhale</span></div>
+          <h3 data-i18n="proj_4_title">Uluslararası Tramvay Hattı</h3>
+          <p data-i18n="proj_4_desc">IBRD ve IPARD destekli, uluslararası ihale süreçleri yönetilen tramvay projesi.</p>
+          <div class="project-tags"><span data-i18n="proj_4_t1">Raylı Sistem</span><span data-i18n="proj_4_t2">İhale</span></div>
         </div>
       </div>
     </div>
   </section>
 
   <section id="education">
-    <h2 class="section-title reveal">Eğitim & <em>Sertifikalar</em></h2>
-    <p class="section-sub reveal delay-1">Akademik temelim ve mesleki yetkinliklerim.</p>
+    <h2 class="section-title reveal" data-i18n="edu_title">Eğitim & <em>Sertifikalar</em></h2>
+    <p class="section-sub reveal delay-1" data-i18n="edu_sub">Akademik temelim ve mesleki yetkinliklerim.</p>
     <div class="edu-grid">
       <div class="edu-card reveal">
         <span class="icon">🎓</span>
-        <h3>İnşaat Mühendisliği, Doktora</h3>
-        <div class="school">Ondokuz Mayıs Üniversitesi · 2025 — Devam Ediyor</div>
-        <p>İnşaat mühendisliği ve malzeme bilimi alanında ileri düzey araştırmalar.</p>
+        <h3 data-i18n="edu_1_title">İnşaat Mühendisliği, Doktora</h3>
+        <div class="school" data-i18n="edu_1_school">Ondokuz Mayıs Üniversitesi · 2025 — Devam Ediyor</div>
+        <p data-i18n="edu_1_desc">İnşaat mühendisliği ve malzeme bilimi alanında ileri düzey araştırmalar.</p>
       </div>
       <div class="edu-card reveal delay-1">
         <span class="icon">🔬</span>
-        <h3>Nanoteknoloji Mühendisliği, YL</h3>
-        <div class="school">Ondokuz Mayıs Üniversitesi · 2020 — 2024</div>
-        <p>İnovatif malzeme geliştirme ve nanoteknoloji uygulamaları.</p>
+        <h3 data-i18n="edu_2_title">Nanoteknoloji Mühendisliği, YL</h3>
+        <div class="school" data-i18n="edu_2_school">Ondokuz Mayıs Üniversitesi · 2020 — 2024</div>
+        <p data-i18n="edu_2_desc">İnovatif malzeme geliştirme ve nanoteknoloji uygulamaları.</p>
       </div>
       <div class="edu-card reveal delay-2">
         <span class="icon">🏗️</span>
-        <h3>İnşaat Mühendisliği, YL</h3>
-        <div class="school">Hacettepe Üniversitesi · 2017 — 2019</div>
-        <p>İleri yapısal analiz ve mühendislik yönetimi.</p>
+        <h3 data-i18n="edu_3_title">İnşaat Mühendisliği, YL</h3>
+        <div class="school" data-i18n="edu_3_school">Hacettepe Üniversitesi · 2017 — 2019</div>
+        <p data-i18n="edu_3_desc">İleri yapısal analiz ve mühendislik yönetimi.</p>
       </div>
       <div class="edu-card reveal">
         <span class="icon">🎓</span>
-        <h3>İnşaat Mühendisliği, Lisans</h3>
-        <div class="school">Orta Doğu Teknik Üniversitesi (ODTÜ) · 2008 — 2014</div>
-        <p>Temel mühendislik, yapı statiği ve betonarme tasarımı.</p>
+        <h3 data-i18n="edu_4_title">İnşaat Mühendisliği, Lisans</h3>
+        <div class="school" data-i18n="edu_4_school">Orta Doğu Teknik Üniversitesi (ODTÜ) · 2008 — 2014</div>
+        <p data-i18n="edu_4_desc">Temel mühendislik, yapı statiği ve betonarme tasarımı.</p>
       </div>
     </div>
   </section>
 
   <section id="contact">
-    <h2 class="section-title reveal">İle<em>tişim</em></h2>
-    <p class="section-sub reveal delay-1">Birlikte sağlam bir şeyler inşa edelim.</p>
+    <h2 class="section-title reveal" data-i18n="cont_title">İle<em>tişim</em></h2>
+    <p class="section-sub reveal delay-1" data-i18n="cont_sub">Birlikte sağlam bir şeyler inşa edelim.</p>
     <div class="contact-wrap">
       <div class="contact-info reveal">
-        <p>Projeleriniz veya iş birlikleri için bana ulaşabilirsiniz.</p>
-        <div class="contact-item"><div class="ic">📧</div><div><span>E-posta</span><strong>b.katipoglu@gmail.com</strong></div></div>
-        <div class="contact-item"><div class="ic">📞</div><div><span>Telefon</span><strong>+90 (544) 442 86 50</strong></div></div>
-        <div class="contact-item"><div class="ic">📍</div><div><span>Konum</span><strong>Samsun, Atakum</strong></div></div>
+        <p data-i18n="cont_p">Projeleriniz veya iş birlikleri için bana ulaşabilirsiniz.</p>
+        <div class="contact-item"><div class="ic">📧</div><div><span data-i18n="cont_email">E-posta</span><strong>b.katipoglu@gmail.com</strong></div></div>
+        <div class="contact-item"><div class="ic">📞</div><div><span data-i18n="cont_phone">Telefon</span><strong>+90 (544) 442 86 50</strong></div></div>
+        <div class="contact-item"><div class="ic">📍</div><div><span data-i18n="cont_loc">Konum</span><strong data-i18n="cont_city">Samsun, Atakum</strong></div></div>
       </div>
       
       <form class="reveal delay-1" id="contactForm" action="https://formsubmit.co/ajax/b.katipoglu@gmail.com" method="POST">
         <input type="hidden" name="_captcha" value="false">
         <input type="hidden" name="_subject" value="Portfolyo Sitesinden Yeni Mesaj!">
         
-        <div class="field"><input type="text" id="name" name="Ad" placeholder=" " required><label for="name">Adınız</label></div>
-        <div class="field"><input type="email" id="email" name="E-posta" placeholder=" " required><label for="email">E-posta</label></div>
-        <div class="field"><textarea id="message" name="Mesaj" placeholder=" " required></textarea><label for="message">Mesajınız</label></div>
-        <button type="submit" class="btn">Mesaj Gönder</button>
+        <div class="field"><input type="text" id="name" name="Ad" placeholder=" " required><label for="name" data-i18n="cont_name">Adınız</label></div>
+        <div class="field"><input type="email" id="email" name="E-posta" placeholder=" " required><label for="email" data-i18n="cont_email_form">E-posta</label></div>
+        <div class="field"><textarea id="message" name="Mesaj" placeholder=" " required></textarea><label for="message" data-i18n="cont_msg">Mesajınız</label></div>
+        <button type="submit" class="btn" data-i18n="cont_btn">Mesaj Gönder</button>
       </form>
     </div>
   </section>
 </div>
 
-<footer>© 2026 Barış Kâtipoğlu · İnşaat Mühendisi</footer>
+<footer><span data-i18n="footer">© 2026 Barış Kâtipoğlu · İnşaat Mühendisi</span></footer>
 
 <div class="curve-menu" id="curveMenu" aria-hidden="true">
   <svg viewBox="0 0 100 100" preserveAspectRatio="none">
     <path id="menuCurve" d="M 0 0 L 100 0 L 100 0 L 0 0 Z"></path>
   </svg>
   <div class="menu-inner" id="menuInner">
-    <div class="menu-label">Navigasyon</div>
-    <a href="#hero"><span>01</span>Ana Sayfa</a>
-    <a href="#whoami"><span>02</span>Ben Kimim</a>
-    <a href="#experience"><span>03</span>Deneyim</a>
-    <a href="#projects"><span>04</span>Projeler</a>
-    <a href="#education"><span>05</span>Eğitim</a>
-    <a href="#contact"><span>06</span>İletişim</a>
+    <div class="menu-label" data-i18n="nav_label">Navigasyon</div>
+    <a href="#hero"><span>01</span><span data-i18n="nav_home">Ana Sayfa</span></a>
+    <a href="#whoami"><span>02</span><span data-i18n="nav_who">Ben Kimim</span></a>
+    <a href="#impact"><span>03</span><span data-i18n="nav_impact">Etki Alanı</span></a>
+    <a href="#experience"><span>04</span><span data-i18n="nav_exp">Deneyim</span></a>
+    <a href="#projects"><span>05</span><span data-i18n="nav_proj">Projeler</span></a>
+    <a href="#education"><span>06</span><span data-i18n="nav_edu">Eğitim</span></a>
+    <a href="#contact"><span>07</span><span data-i18n="nav_cont">İletişim</span></a>
     <div class="menu-footer">
       <span>Barış Kâtipoğlu © 2026</span>
-      <span>Samsun, TR</span>
+      <span data-i18n="nav_loc">Samsun, TR</span>
     </div>
   </div>
 </div>
@@ -680,7 +871,175 @@
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
 
 <script>
-  // 1. İNŞAAT MÜHENDİSLİĞİ TEMALI CANVAS
+  // === 1. DİL SÖZLÜĞÜ VE ÇEVİRİ MANTIĞI ===
+  const translations = {
+    // Hero
+    "hero_desc": { tr: "İnşaat mühendisliği, malzeme bilimi ve ürün yönetimi alanlarında 10+ yıllık tecrübeyle ulusal ve uluslararası dev projelere liderlik ediyorum.", en: "Leading national and international mega-projects with over 10 years of experience in civil engineering, materials science, and product management." },
+    "hero_role": { tr: "İnşaat Mühendisi & Proje Koordinatörü", en: "Civil Engineer & Project Coordinator" },
+    "scroll_text": { tr: "Keşfet", en: "Explore" },
+    "badgeText": { tr: "YENİ PROJELER İÇİN UYGUN • YENİ PROJELER İÇİN UYGUN • ", en: "AVAILABLE FOR NEW PROJECTS • AVAILABLE FOR NEW PROJECTS • " },
+    
+    // Nav
+    "nav_label": { tr: "Navigasyon", en: "Navigation" },
+    "nav_home": { tr: "Ana Sayfa", en: "Home" },
+    "nav_who": { tr: "Ben Kimim", en: "Who Am I" },
+    "nav_impact": { tr: "Etki Alanı", en: "Impact" },
+    "nav_exp": { tr: "Deneyim", en: "Experience" },
+    "nav_proj": { tr: "Projeler", en: "Projects" },
+    "nav_edu": { tr: "Eğitim", en: "Education" },
+    "nav_cont": { tr: "İletişim", en: "Contact" },
+    "nav_loc": { tr: "Samsun, TR", en: "Samsun, TR" },
+
+    // Whoami
+    "about_label": { tr: "(Hakkımda)", en: "(About Me)" },
+    "about_title": { tr: "BEN <span>KİMİM</span>", en: "WHO <span>AM I</span>" },
+    "about_p1": { tr: "<strong>Merhaba, ben Barış.</strong> ODTÜ İnşaat Mühendisliği mezunuyum. Kariyerim boyunca ulusal ve uluslararası büyük ölçekli projelerde (HS2, İzmir-İstanbul Otoyolu vb.) ürün yönetimi, Ar-Ge ve liderlik deneyimiyle görev aldım.", en: "<strong>Hello, I am Barış.</strong> A graduate of METU Civil Engineering. Throughout my career, I have taken part in national and international large-scale projects (HS2, Izmir-Istanbul Motorway, etc.) with experience in product management, R&D, and leadership." },
+    "about_p2": { tr: "İnşaat mühendisliği ve malzeme bilimi alanlarındaki teknik uzmanlığımı, proje yönetimi ve stratejik liderlik vizyonuyla birleştiriyorum. Yaşam döngüsü yönetimi, inovatif malzeme geliştirme ve optimizasyon konularında uzmanlaştım.", en: "I combine my technical expertise in civil engineering and materials science with a vision for project management and strategic leadership. I specialize in lifecycle management, innovative material development, and optimization." },
+    "stat_1": { tr: "Yıl Deneyim", en: "Years Experience" },
+    "stat_2": { tr: "Milyon € Bütçe", en: "Million € Budget" },
+    "stat_3": { tr: "Tamamlanan Köprü", en: "Completed Bridges" },
+    "stat_4": { tr: "Yüksek Lisans", en: "Master's Degrees" },
+    "about_quote": { tr: '"İnşaat mühendisliği sadece hesaplamak değil; stratejik vizyon, inovatif malzeme ve kusursuz yönetimle geleceği inşa etmektir."', en: '"Civil engineering is not just about calculating; it is about building the future with strategic vision, innovative materials, and flawless management."' },
+    "about_role": { tr: "Kıdemli Proje Koordinatörü", en: "Senior Project Coordinator" },
+
+    // Impact
+    "impact_title": { tr: "Mühendislik <em>Etkimiz</em>", en: "Engineering <em>Impact</em>" },
+    "impact_sub": { tr: "Rakamlarla somut başarılar ve projelere sağladığım katma değer.", en: "Concrete successes in numbers and the added value I provide to projects." },
+    "impact_c1": { tr: "Statik Tasarım ile Maliyet Avantajı", en: "Cost Advantage via Structural Design" },
+    "impact_c2": { tr: "Proje Süresi İyileştirmesi (HS2)", en: "Project Duration Improvement (HS2)" },
+    "impact_c3": { tr: "Çelik Tasarrufu", en: "Steel Savings" },
+    "impact_c4": { tr: "Köprü Projesi (5 Ay Erken)", en: "Bridge Projects (5 Months Early)" },
+    "impact_c5": { tr: "Parametrik Tasarım & Süreç Otomasyonu", en: "Parametric Design & Process Automation" },
+    "impact_tons": { tr: " Ton", en: " Tons" },
+    "impact_units": { tr: " Adet", en: " Units" },
+
+    // Experience
+    "exp_title": { tr: "İş <em>Deneyimi</em>", en: "Work <em>Experience</em>" },
+    "exp_sub": { tr: "Profesyonel yolculuğumdan dönüm noktaları.", en: "Milestones from my professional journey." },
+    "exp_1_date": { tr: "Ocak 2021 — Ekim 2025", en: "Jan 2021 — Oct 2025" },
+    "exp_1_title": { tr: "Kıdemli Proje Koordinatörü", en: "Senior Project Coordinator" },
+    "exp_1_desc": { tr: "HS2 projesinde (6 TBM, 45 mil tünel) risk ve süreç analizlerini yöneterek proje gecikmelerini minimize ettim. Veri odaklı tahminleme ile proje süresinde %15 iyileşme ve maliyetlerde ciddi azalma sağladım.", en: "Managed risk and process analyses in the HS2 project (6 TBMs, 45-mile tunnel) to minimize project delays. Achieved a 15% improvement in project duration and significant cost reductions through data-driven forecasting." },
+    "exp_2_date": { tr: "Ocak 2019 — Aralık 2021", en: "Jan 2019 — Dec 2021" },
+    "exp_2_title": { tr: "Koordinatör", en: "Coordinator" },
+    "exp_2_desc": { tr: "500+ milyon € bütçeli metro ve konut projelerinde tüm koordinasyonu üstlendim. 100+ kişilik ekibi yöneterek ürün/çözüm tasarımlarını müşteri ihtiyaçlarına uygun hale getirdim.", en: "Took over all coordination in metro and housing projects with a budget of €500+ million. Managed a team of 100+ to tailor product/solution designs to customer needs." },
+    "exp_3_date": { tr: "Ocak 2018 — Aralık 2019", en: "Jan 2018 — Dec 2019" },
+    "exp_3_title": { tr: "Ülke Koordinatörü", en: "Country Coordinator" },
+    "exp_3_desc": { tr: "IBRD ve IPARD destekli projelerde uluslararası ihale süreçlerini yönettim. Tramvay hattı ve altyapı projelerinde ürün/hizmet konumlandırma ve teknik sözleşme yönetimi gerçekleştirdim.", en: "Managed international tender processes in IBRD and IPARD supported projects. Executed product/service positioning and technical contract management in tram line and infrastructure projects." },
+    "exp_4_date": { tr: "Ocak 2016 — Aralık 2018", en: "Jan 2016 — Dec 2018" },
+    "exp_4_title": { tr: "Teknik Ofis Müdürü", en: "Technical Office Manager" },
+    "exp_4_desc": { tr: "İzmir-İstanbul otoyolu 45 km bölümünde teknik ürün/çözüm optimizasyonu yaptım. Statik projeleri yeniden tasarlayarak %27 maliyet avantajı ve 318 ton çelik tasarrufu sağladım. 29 köprü projesini 5 ay erken tamamladım.", en: "Optimized technical products/solutions in the 45 km section of the Izmir-Istanbul motorway. Achieved a 27% cost advantage and 318 tons of steel savings by redesigning structural projects. Completed 29 bridge projects 5 months early." },
+    "exp_5_date": { tr: "Ocak 2014 — Aralık 2016", en: "Jan 2014 — Dec 2016" },
+    "exp_5_title": { tr: "Teknik Ofis Mühendisi", en: "Technical Office Engineer" },
+    "exp_5_desc": { tr: "3 büyük tasarım hatasını erken tespit ederek yapısal riskleri önledim. Kriz döneminde uyguladığım maliyet azaltma stratejileri ile %12 tasarruf sağladım.", en: "Prevented structural risks by detecting 3 major design errors early. Achieved 12% savings with the cost reduction strategies I implemented during the crisis period." },
+
+    // Projects
+    "proj_title": { tr: "Öne Çıkan <em>Projeler</em>", en: "Featured <em>Projects</em>" },
+    "proj_sub": { tr: "Liderlik ettiğim dev ölçekli çalışmalar.", en: "Mega-scale works I have led." },
+    "proj_1_title": { tr: "HS2 Demiryolu Projesi", en: "HS2 Railway Project" },
+    "proj_1_desc": { tr: "İngiltere'nin en büyük altyapı projesinde 6 TBM ve 45 mil tünel yönetimi.", en: "Management of 6 TBMs and 45 miles of tunnels in the UK's largest infrastructure project." },
+    "proj_1_t1": { tr: "Tünel", en: "Tunnel" }, "proj_1_t2": { tr: "Risk Yönetimi", en: "Risk Management" },
+    "proj_2_title": { tr: "İzmir-İstanbul Otoyolu", en: "Izmir-Istanbul Motorway" },
+    "proj_2_desc": { tr: "45 km'lik bölümde %27 maliyet avantajı sağlayan statik tasarım optimizasyonu.", en: "Structural design optimization providing a 27% cost advantage in the 45 km section." },
+    "proj_2_t1": { tr: "Otoyol", en: "Motorway" }, "proj_2_t2": { tr: "Çelik Tasarrufu", en: "Steel Savings" },
+    "proj_3_title": { tr: "Metro & Konut Projeleri", en: "Metro & Housing Projects" },
+    "proj_3_desc": { tr: "500+ milyon € bütçeli, 100+ kişilik ekiplerle yönetilen dev altyapı projeleri.", en: "Mega infrastructure projects with a €500+ million budget, managed by teams of 100+." },
+    "proj_3_t1": { tr: "Metro", en: "Metro" }, "proj_3_t2": { tr: "Liderlik", en: "Leadership" },
+    "proj_4_title": { tr: "Uluslararası Tramvay Hattı", en: "International Tram Line" },
+    "proj_4_desc": { tr: "IBRD ve IPARD destekli, uluslararası ihale süreçleri yönetilen tramvay projesi.", en: "IBRD and IPARD supported tram project with managed international tender processes." },
+    "proj_4_t1": { tr: "Raylı Sistem", en: "Rail System" }, "proj_4_t2": { tr: "İhale", en: "Tender" },
+
+    // Education
+    "edu_title": { tr: "Eğitim & <em>Sertifikalar</em>", en: "Education & <em>Certificates</em>" },
+    "edu_sub": { tr: "Akademik temelim ve mesleki yetkinliklerim.", en: "My academic background and professional competencies." },
+    "edu_1_title": { tr: "İnşaat Mühendisliği, Doktora", en: "Civil Engineering, PhD" },
+    "edu_1_school": { tr: "Ondokuz Mayıs Üniversitesi · 2025 — Devam Ediyor", en: "Ondokuz Mayıs University · 2025 — Present" },
+    "edu_1_desc": { tr: "İnşaat mühendisliği ve malzeme bilimi alanında ileri düzey araştırmalar.", en: "Advanced research in civil engineering and materials science." },
+    "edu_2_title": { tr: "Nanoteknoloji Mühendisliği, YL", en: "Nanotechnology Engineering, MSc" },
+    "edu_2_school": { tr: "Ondokuz Mayıs Üniversitesi · 2020 — 2024", en: "Ondokuz Mayıs University · 2020 — 2024" },
+    "edu_2_desc": { tr: "İnovatif malzeme geliştirme ve nanoteknoloji uygulamaları.", en: "Innovative material development and nanotechnology applications." },
+    "edu_3_title": { tr: "İnşaat Mühendisliği, YL", en: "Civil Engineering, MSc" },
+    "edu_3_school": { tr: "Hacettepe Üniversitesi · 2017 — 2019", en: "Hacettepe University · 2017 — 2019" },
+    "edu_3_desc": { tr: "İleri yapısal analiz ve mühendislik yönetimi.", en: "Advanced structural analysis and engineering management." },
+    "edu_4_title": { tr: "İnşaat Mühendisliği, Lisans", en: "Civil Engineering, BSc" },
+    "edu_4_school": { tr: "Orta Doğu Teknik Üniversitesi (ODTÜ) · 2008 — 2014", en: "Middle East Technical University (METU) · 2008 — 2014" },
+    "edu_4_desc": { tr: "Temel mühendislik, yapı statiği ve betonarme tasarımı.", en: "Fundamental engineering, structural mechanics, and reinforced concrete design." },
+
+    // Contact
+    "cont_title": { tr: "İle<em>tişim</em>", en: "Con<em>tact</em>" },
+    "cont_sub": { tr: "Birlikte sağlam bir şeyler inşa edelim.", en: "Let's build something solid together." },
+    "cont_p": { tr: "Projeleriniz veya iş birlikleri için bana ulaşabilirsiniz.", en: "You can reach out to me for your projects or collaborations." },
+    "cont_email": { tr: "E-posta", en: "Email" },
+    "cont_phone": { tr: "Telefon", en: "Phone" },
+    "cont_loc": { tr: "Konum", en: "Location" },
+    "cont_city": { tr: "Samsun, Atakum", en: "Samsun, Atakum" },
+    "cont_name": { tr: "Adınız", en: "Your Name" },
+    "cont_email_form": { tr: "E-posta", en: "Email" },
+    "cont_msg": { tr: "Mesajınız", en: "Your Message" },
+    "cont_btn": { tr: "Mesaj Gönder", en: "Send Message" },
+    
+    // Footer
+    "footer": { tr: "© 2026 Barış Kâtipoğlu · İnşaat Mühendisi", en: "© 2026 Barış Kâtipoğlu · Civil Engineer" }
+  };
+
+  function setLanguage(lang) {
+    // 1. Metinleri değiştir
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if (translations[key]) {
+        // Eğer içinde <strong> veya <span> gibi HTML etiketleri varsa innerHTML kullan
+        if (translations[key][lang].includes('<')) {
+          el.innerHTML = translations[key][lang];
+        } else {
+          el.textContent = translations[key][lang];
+        }
+      }
+    });
+
+    // 2. Placeholder'ları değiştir
+    document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+      const key = el.getAttribute('data-i18n-ph');
+      if (translations[key]) {
+        el.setAttribute('placeholder', translations[key][lang]);
+      }
+    });
+
+    // 3. Menüdeki dairesel badge yazısını değiştir (SVG textPath)
+    const badgeText = document.getElementById('badgeText');
+    if (badgeText) badgeText.textContent = translations['badgeText'][lang];
+
+    // 4. Meta Etiketleri güncelle
+    document.title = lang === 'tr' ? "Barış Kâtipoğlu | İnşaat Mühendisi & Proje Koordinatörü" : "Barış Kâtipoğlu | Civil Engineer & Project Coordinator";
+    document.querySelector('meta[name="description"]').setAttribute('content', 
+      lang === 'tr' ? "10+ yıllık tecrübeyle ulusal ve uluslararası dev altyapı projelerinde liderlik eden İnşaat Mühendisi Barış Kâtipoğlu'nun portfolyosu." : "Portfolio of Civil Engineer Barış Kâtipoğlu, leading national and international mega infrastructure projects with 10+ years of experience."
+    );
+
+    // 5. Dil Butonlarını Güncelle
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      if (btn.getAttribute('data-lang') === lang) {
+        btn.classList.add('active');
+      } else {
+        btn.classList.remove('active');
+      }
+    });
+
+    // 6. HTML lang attribute
+    document.documentElement.lang = lang;
+
+    // 7. Tercihi kaydet
+    localStorage.setItem('preferredLang', lang);
+  }
+
+  // Dil butonlarına tıklama olayı
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const lang = e.target.getAttribute('data-lang');
+      setLanguage(lang);
+    });
+  });
+
+
+  // === 2. İNŞAAT MÜHENDİSLİĞİ TEMALI CANVAS ===
   const canvas = document.getElementById('bg-canvas');
   const ctx = canvas.getContext('2d');
   let width, height;
@@ -759,7 +1118,7 @@
   }
   animateCanvas();
 
-  // 2. PRELOADER
+  // === 3. PRELOADER ===
   const greetings = ["Merhaba", "Hello", "Bonjour", "Ciao", "Hola", "Hallo", "Konnichiwa", "Namaste", "Привет", "Marhaba", "İnşaat Mühendisi"];
   const preText = document.getElementById('preText');
   const preloader = document.getElementById('preloader');
@@ -799,7 +1158,7 @@
     });
   });
 
-  // 3. LENIS VE SCROLLTRIGGER
+  // === 4. LENIS VE SCROLLTRIGGER ===
   const lenis = new Lenis({ duration: 1.2, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), smoothWheel: true });
   function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
   requestAnimationFrame(raf);
@@ -832,7 +1191,33 @@
     });
   });
 
-  // 4. LİNKLER VE YUKARI ÇIK
+  document.querySelectorAll('.impact-bar-fill').forEach(bar => {
+    ScrollTrigger.create({
+      trigger: bar,
+      start: 'top 90%',
+      once: true,
+      onEnter: () => {
+        gsap.to(bar, { width: bar.dataset.width, duration: 1.5, ease: 'power3.out', delay: 0.2 });
+      }
+    });
+  });
+
+  if (window.innerWidth > 900) {
+    gsap.to(".timeline", {
+      x: () => -(document.querySelector(".timeline").scrollWidth - window.innerWidth + (window.innerWidth * 0.2)),
+      ease: "none",
+      scrollTrigger: {
+        trigger: ".timeline-wrapper",
+        pin: true,
+        scrub: 1,
+        start: "center center",
+        end: () => "+=" + (document.querySelector(".timeline").scrollWidth - window.innerWidth),
+        invalidateOnRefresh: true,
+      }
+    });
+  }
+
+  // === 5. LİNKLER VE YUKARI ÇIK ===
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
       e.preventDefault();
@@ -845,7 +1230,7 @@
   window.addEventListener('scroll', () => { window.scrollY > 300 ? backToTopBtn.classList.add('show') : backToTopBtn.classList.remove('show'); });
   backToTopBtn.addEventListener('click', () => { lenis.scrollTo(0, { duration: 1.5 }); });
 
-  // 5. MENÜ
+  // === 6. MENÜ ===
   const menuBtn = document.getElementById('menuBtn');
   const curveMenu = document.getElementById('curveMenu');
   const menuCurve = document.getElementById('menuCurve');
@@ -888,7 +1273,7 @@
   });
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && menuOpen) menuBtn.click(); });
 
-  // 6. FORM GÖNDERİMİ
+  // === 7. FORM GÖNDERİMİ ===
   const contactForm = document.getElementById('contactForm');
   if (contactForm) {
     contactForm.addEventListener('submit', function (e) {
@@ -912,6 +1297,15 @@
       });
     });
   }
+
+  // === 8. SAYFA YÜKLENDİĞİNDE DİL TERCİHİNİ UYGULA ===
+  window.addEventListener('DOMContentLoaded', () => {
+    const savedLang = localStorage.getItem('preferredLang') || 'tr';
+    if (savedLang === 'en') {
+      setLanguage('en');
+    }
+  });
+
 </script>
 </body>
 </html>
