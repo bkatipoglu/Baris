@@ -211,8 +211,9 @@
   .hero-main {
     flex: 1; display: flex; flex-direction: column;
     justify-content: center; align-items: center;
-    text-align: center; padding: 0 20px; position: relative; z-index: 10;
-    transform: translateY(-30px); /* Tüm yazı grubunu hafif yukarı çeker */
+    text-align: center; padding: 0 20px 100px 20px; /* Alt tarafa 100px boşluk bıraktık */
+    position: relative; z-index: 10;
+    transform: translateY(-30px);
   }
   
   .hero-title-group { position: relative; display: flex; flex-direction: column; align-items: center; }
@@ -245,11 +246,11 @@
   }
 
   /* KEŞFET */
-  .scroll-indicator {
-    position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%);
+   .scroll-indicator {
     display: flex; flex-direction: column; align-items: center; gap: 10px;
     z-index: 10; opacity: 0; cursor: pointer; text-decoration: none;
     transition: transform 0.3s ease;
+    margin-top: 40px; /* Yazılarla arasına 40px boşluk koyduk */
   }
   .scroll-indicator:hover { transform: translateX(-50%) translateY(5px); }
   .scroll-mouse {
@@ -624,21 +625,22 @@
     </div>
   </a>
 
-  <div class="hero-main" id="heroContent">
+   <div class="hero-main" id="heroContent">
     <div class="hero-title-group">
       <h1 class="main-name">BARIŞ</h1>
       <h2 class="sub-name">Kâtipoğlu</h2>
-      <!-- Ünvan ismin hemen altına alındı -->
       <div class="hero-role" data-i18n="hero_role">İnşaat Mühendisi & Proje Koordinatörü</div>
     </div>
-    <p class="hero-desc" data-i18n="hero_desc">İnşaat mühendisliği, malzeme bilimi ve ürün yönetimi alanlarında 10+ yıllık tecrübeyle ulusal ve uluslararası dev projelere liderlik ediyorum.</p>
+    <p class="hero-desc" data-i18n="hero_desc">...</p>
+    
+    <!-- İkonu buraya, yazıların altına aldık -->
+    <a href="#whoami" class="scroll-indicator" id="scrollIndicator">
+      <div class="scroll-mouse">
+        <div class="scroll-wheel"></div>
+      </div>
+      <div class="scroll-text" data-i18n="scroll_text">Keşfet</div>
+    </a>
   </div>
-
-  <a href="#whoami" class="scroll-indicator" id="scrollIndicator">
-    <div class="scroll-mouse">
-      <div class="scroll-wheel"></div>
-    </div>
-    <div class="scroll-text" data-i18n="scroll_text">Keşfet</div>
   </a>
 </header>
 
